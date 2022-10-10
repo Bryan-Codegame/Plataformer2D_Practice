@@ -12,6 +12,8 @@ public class PlayerController : MonoBehaviour
     public float jumpForce = 5;
     public bool isOnGround = true;
 
+    private bool isFacingRight = true;
+
     [SerializeField] private Transform _groundCheck;
     [SerializeField] private LayerMask _groundLayer;
     
@@ -39,6 +41,8 @@ public class PlayerController : MonoBehaviour
         {
             _rb.AddForce(Vector2.up*jumpForce, ForceMode2D.Impulse);
         }
+        
+        Flip();
 
     }
     
@@ -51,5 +55,16 @@ public class PlayerController : MonoBehaviour
     bool isGround()
     {
         return Physics2D.OverlapCircle(_groundCheck.position, 0.3f, _groundLayer);
+    }
+
+    void Flip()
+    {
+        if (horizontalInput > 0 && !isFacingRight || horizontalInput < 0 && isFacingRight)
+        {
+            isFacingRight = !isFacingRight;
+            Vector2 localScale = transform.localScale;
+            localScale.x *= -1f;
+            transform.localScale = localScale;
+        }
     }
 }

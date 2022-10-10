@@ -18,11 +18,13 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private LayerMask _groundLayer;
     
     private Rigidbody2D _rb;
+    private Animator _animator;
     
     
     private void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
+        _animator = GetComponent<Animator>();
     }
 
     // Start is called before the first frame update
@@ -36,6 +38,7 @@ public class PlayerController : MonoBehaviour
     {
 
         horizontalInput = Input.GetAxis("Horizontal");
+        _animator.SetFloat("HorizontalAnim", Mathf.Abs(horizontalInput));
 
         if (Input.GetKeyDown(KeyCode.Space) && isGround())
         {

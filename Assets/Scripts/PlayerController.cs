@@ -11,6 +11,9 @@ public class PlayerController : MonoBehaviour
     public float speed = 10;
     public float jumpForce = 5;
     public bool isOnGround = true;
+
+    [SerializeField] private Transform _groundCheck;
+    [SerializeField] private LayerMask _groundLayer;
     
     private Rigidbody2D _rb;
     
@@ -32,23 +35,21 @@ public class PlayerController : MonoBehaviour
 
         horizontalInput = Input.GetAxis("Horizontal");
 
-        if (Input.GetKeyDown(KeyCode.Space) && isOnGround)
+        if (Input.GetKeyDown(KeyCode.Space) && isGround())
         {
             _rb.AddForce(Vector2.up*jumpForce, ForceMode2D.Impulse);
-            isOnGround = false;
         }
 
-    }
-
-    void OnCollisionEnter2D(Collision2D col)
-    {
-        isOnGround = true;
     }
     
     void FixedUpdate()
     {
-        
         _rb.velocity = new Vector2(speed * horizontalInput, _rb.velocity.y);
         //_rb.AddForce(new Vector2(speed*horizontalInput, transform.position.y), ForceMode2D.Force);
+    }
+    
+    bool isGround()
+    {
+        return Physics2D.OverlapCircle(_groundCheck.position, 0.3f, _groundLayer);
     }
 }
